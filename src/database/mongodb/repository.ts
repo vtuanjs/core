@@ -13,7 +13,7 @@ import { FindAllOption, FindAllResponse } from '../../types';
 
 export { Schema, FilterQuery, CreateQuery, UpdateQuery, Document } from 'mongoose';
 
-export default abstract class BaseRepo<T> implements IBaseRepository<T> {
+export default abstract class BaseRepository<T> implements IBaseRepository<T> {
   protected model: Model<T & Document>;
 
   constructor(name: string, schema: Schema, collection: string) {

@@ -18,7 +18,7 @@ export interface ICache {
   decrByAsync: (key: string, decrement: number) => Promise<number>;
 }
 
-export default class Redis implements ICache {
+export class Redis implements ICache {
   client: RedisClient;
   getAsync: (key: string) => Promise<string | null>;
 

@@ -1,3 +1,4 @@
+/* @strict */
 import amqp from 'amqplib';
 import EventEmitter from 'events';
 import { IntegrationEvent, IIntegrationEvent } from './event';
@@ -68,7 +69,7 @@ export interface IEventBus {
   connect: () => Promise<void>;
 }
 
-export default class EventBus implements IEventBus {
+export default class RabbitMQ implements IEventBus {
   consumer: string;
   exchange: string;
   hostname: string;
