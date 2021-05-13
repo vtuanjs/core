@@ -1,6 +1,6 @@
 {
   "name": "@vtjs/core",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "### 1. Package",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -45,7 +45,6 @@
     "axios": "^0.21.0",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
-    "dotenv": "^9.0.2",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "5.10.1",
