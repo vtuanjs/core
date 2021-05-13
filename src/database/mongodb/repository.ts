@@ -48,14 +48,14 @@ export default abstract class BaseRepository<T> implements IBaseRepository<T> {
     return new mongo.ObjectId().toHexString();
   }
 
-  @Repository(false)
+  @RepositoryDecorator(false)
   async create(entity: Partial<T>): Promise<T> {
     const _entity = await this.model.create(entity as CreateQuery<T & Document>);
     const doc = _entity.toObject();
     return doc;
   }
 
-  @Repository()
+  @RepositoryDecorator()
   async updateById(id: string, doc: Partial<T>): Promise<boolean> {
     const raw = await this.model.updateOne({ _id: id as any }, doc as UpdateQuery<T & Document>);
     if (raw.ok === 0) {
@@ -64,19 +64,19 @@ export default abstract class BaseRepository<T> implements IBaseRepository<T> {
     return raw.nModified === 0 ? false : true;
   }
 
-  @Repository()
+  @RepositoryDecorator()
   async findOne(cond: Partial<T>): Promise<T> {
     const entity = await this.model.findOne(cond as FilterQuery<T & Document>).lean();
     return entity as T;
   }
 
-  @Repository()
+  @RepositoryDecorator()
   async findMany(cond: Partial<T>): Promise<T[]> {
     const entity = await this.model.find(cond as FilterQuery<T & Document>).lean();
     return entity as T[];
   }
 
-  @Repository()
+  @RepositoryDecorator()
   async findOneAndUpdate(cond: Partial<T>, doc: Partial<T>): Promise<T> {
     const entity = await this.model
       .findOneAndUpdate(cond as FilterQuery<T & Document>, doc as UpdateQuery<T & Document>, {
@@ -86,7 +86,7 @@ export default abstract class BaseRepository<T> implements IBaseRepository<T> {
     return entity as T;
   }
 
-  @Repository()
+  @RepositoryDecorator()
   async findAll(cond: Partial<T>, option: Partial<FindAllOption>): Promise<FindAllResponse<T>> {
     if (!option) option = {};
     const { fields } = option;
@@ -120,7 +120,7 @@ export default abstract class BaseRepository<T> implements IBaseRepository<T> {
     };
   }
 
-  @Repository()
+  @RepositoryDecorator()
   async deleteById(id: string): Promise<boolean> {
     const raw = await this.model.deleteOne({ _id: id as any });
 
@@ -130,14 +130,17 @@ export default abstract class BaseRepository<T> implements IBaseRepository<T> {
     return raw.n === 0 ? false : true;
   }
 
-  @Repository()
+  @RepositoryDecorator()
   async count(cond: Partial<T>): Promise<number> {
     const count = await this.model.countDocuments(cond as FilterQuery<T & Document>);
     return count;
   }
 }
 
-export function Repository(transformInputCondition = true, transformOutputEntities = true) {
+export function RepositoryDecorator(
+  transformInputCondition = true,
+  transformOutputEntities = true
+) {
   return (
     _target: unknown,
     _propertyKey: string,

@@ -9,6 +9,7 @@ export {
   CreateQuery as DatabaseCreateQuerySchema,
   UpdateQuery as DatabaseUpdateQuerySchema,
   Document as DatabaseDocument,
+  RepositoryDecorator,
   default as MongoBaseRepository
 } from './database/mongodb/repository';
 export { default as MongoDB } from './database/mongodb';
