@@ -10,7 +10,6 @@
     "declaration": true,
     "paths": {},
     "allowJs": true,
-    "strictNullChecks": false,
     "noImplicitAny": false,
     "experimentalDecorators": true,
     "resolveJsonModule": true,
@@ -18,5 +17,5 @@
     "esModuleInterop": true
   },
   "include": ["src"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "tests", "lib"]
 }

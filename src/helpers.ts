@@ -1,75 +1,36 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { ValidationError } from './errors';
+import { ErrorCode, AppError, ErrorMessage } from './errors';
+import { Response } from 'express';
 
-export function isStringAndNotEmpty(entity: unknown): boolean {
-  return typeof entity === 'string' && entity.trim() !== '';
+export function sendErrorResponse(e: any, res: Response): void {
+  const error = createErrorResponse(e);
+  res.status(error.code || 500);
+
+  delete error.code;
+  res.json(error);
 }
 
-export function isUndefinedOrNull(entity: unknown): boolean {
-  return entity === undefined || entity === null;
+export function sendSuccessReponse(data: any, res: Response): void {
+  res.json(data);
 }
 
-export function waitByPromise(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
+export function createErrorResponse(error: AppError | any): Partial<AppError> {
+  const err: Partial<AppError> = {
+    code: ErrorCode.ServerError,
+    message: ErrorMessage.ServerError
+  };
 
-export function generateTimestamp(): number {
-  return Date.now();
-}
+  if (!error) return err;
 
-export function isObjectHasOwnOneOfValues<T = { [key: string]: string }>(
-  object: T,
-  values: (keyof T)[]
-): boolean {
-  for (const value of values) {
-    if (!isUndefinedOrNull(object[value])) return true;
-  }
-  return false;
-}
+  const { message, code, details } = error;
+  if (message) err.message = message;
+  if (code) err.code = code;
+  if (!details) return err;
 
-export function isChanged(source: unknown, dest: unknown): boolean {
-  if (typeof source != 'string') source = JSON.stringify(source);
-  if (typeof dest != 'string') dest = JSON.stringify(dest);
-
-  return source != dest;
-}
-
-export function isObject(entity: any): boolean {
-  return typeof entity === 'object' && entity != null;
-}
-
-/**
- * Return all changed value of destination object
- */
-export function findChangedValue(source: any, dest: any): any {
-  if (!isObject(source) || !isObject(dest)) return {};
-  const result: any = {};
-
-  for (const key of Object.keys(source)) {
-    if (
-      !isUndefinedOrNull(source[key]) &&
-      !isUndefinedOrNull(dest[key]) &&
-      isChanged(source[key], dest[key])
-    ) {
-      result[key] = dest[key];
-    }
-  }
-
-  return result;
-}
-
-export function validateRequiredField<T>(fields: (keyof T)[], source: any) {
-  const errors: string[] = [];
-  for (const field of fields) {
-    if (!source[field]) {
-      errors.push(field as string);
-    }
-  }
-
-  if (errors.length)
-    throw new ValidationError(undefined, {
-      fields: errors
-    });
-
-  return true;
+  err.details = {};
+  if (details.platform) err.details.platform = details.platform;
+  if (details.message) err.details.message = details.message;
+  if (details.code) err.details.code = details.code;
+  if (details.fields) err.details.fields = details.fields;
+  return err;
 }

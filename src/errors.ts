@@ -29,8 +29,11 @@ export class AppError extends Error {
 
   constructor(code: number = ErrorCode.ServerError, message: string, details?: ErrorDetails) {
     super(message);
+    this.message = message;
     this.code = code;
-    this.details = details;
+    if (details) {
+      this.details = details;
+    }
   }
 }
 

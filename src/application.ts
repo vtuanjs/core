@@ -5,20 +5,39 @@ import cors from 'cors';
 import { IController } from './controller';
 import { sendErrorResponse, createErrorResponse } from './helpers';
 
-import { IAppConfig, IHttpConfig } from '../configurations';
-import { ILogger } from '../logger';
+export { Request, Response, NextFunction, express };
+
+export interface ILogger {
+  info(message?: string, details?: any): void;
+  error(message?: string, details?: any): void;
+  warn(message?: string, details?: any): void;
+  debug(message?: string, details?: any): void;
+}
+
+export type Config = {
+  name?: string;
+  version?: string;
+  port?: number;
+  cors?: { [key: string]: unknown };
+  debug?: boolean;
+};
 
 export abstract class MainApplication {
   server: Server;
   app: Application;
+  config: Config;
 
-  constructor(
-    public appConfig: IAppConfig,
-    public httpConfig: IHttpConfig,
-    public logger: ILogger
-  ) {
+  constructor(public logger: ILogger, config?: Config) {
+    this.config = {
+      port: 5000,
+      debug: false,
+      name: 'Express App',
+      version: '1.0.0',
+      ...config
+    };
+
     this.app = express();
-    this.app.use(cors());
+    this.app.use(cors(this.config.cors));
     this.app.use(compression());
     this.handleRequestError = this.handleRequestError.bind(this);
     this.setupControllersWithoutBodyParser();
@@ -44,7 +63,7 @@ export abstract class MainApplication {
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   protected handleRequestError(err: any, req: Request, res: Response, _next: NextFunction): void {
-    if (this.httpConfig.debug) {
+    if (this.config.debug) {
       this.logger.warn(`API Error: ${err?.code} ${req.url}`, createErrorResponse(err));
     }
 
@@ -52,14 +71,14 @@ export abstract class MainApplication {
   }
 
   showInfo(): void {
-    this.logger.info(`Application: ${this.appConfig.name}`);
-    this.logger.info(`Version: ${this.appConfig.version} \n`);
+    this.logger.info(`Application: ${this.config.name}`);
+    this.logger.info(`Version: ${this.config.version} \n`);
   }
 
   start(): void {
     this.logger.info(`Starting server...`);
-    this.server.listen(this.httpConfig.port, () => {
-      this.logger.info(`Server running at Port: ${this.httpConfig.port}`);
+    this.server.listen(this.config.port, () => {
+      this.logger.info(`Server running at Port: ${this.config.port}`);
     });
   }
 
