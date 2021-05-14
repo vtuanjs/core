@@ -10,10 +10,17 @@ import {
 } from 'mongoose';
 import { IBaseRepository } from '..//interfaces';
 import { FindAllOption, FindAllResponse } from '../../types';
+const isAllowTransformDocID = process.env.DISABLE_TRANSFORM_MONGODB_DOCUMENT_ID;
 
-export { Schema, FilterQuery, CreateQuery, UpdateQuery, Document } from 'mongoose';
+export {
+  Schema as DatabaseSchema,
+  FilterQuery as DatabaseFilterQuery,
+  CreateQuery as DatabaseCreateQuery,
+  UpdateQuery as DatabaseUpdateQuery,
+  Document as DatabaaseDocument
+} from 'mongoose';
 
-export default abstract class BaseRepository<T> implements IBaseRepository<T> {
+export abstract class BaseRepository<T> implements IBaseRepository<T> {
   protected model: Model<T & Document>;
 
   constructor(name: string, schema: Schema, collection: string) {
@@ -149,6 +156,10 @@ export function RepositoryDecorator(
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const oldFunc = descriptor.value!;
     descriptor.value = async function (...args: any[]) {
+      if (isAllowTransformDocID) {
+        return oldFunc.apply(this, args);
+      }
+
       const newQuery = transformQueryCondition(args[0]);
       if (transformInputCondition && newQuery !== null) {
         args[0] = newQuery;

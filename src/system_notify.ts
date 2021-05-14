@@ -7,7 +7,7 @@ export interface ISystemNotify {
   sendSuccessMessageToTelegram(title: string): Promise<void>;
 }
 
-export default class SystemNotify implements ISystemNotify {
+export class SystemNotify implements ISystemNotify {
   constructor(public config: ITelegramConfig, public logger: ILogger) {}
 
   private changeErrorObjectToMessage(error: any) {

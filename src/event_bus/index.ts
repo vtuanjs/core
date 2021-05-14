@@ -69,7 +69,7 @@ export interface IEventBus {
   connect: () => Promise<void>;
 }
 
-export default class RabbitMQ implements IEventBus {
+export class RabbitMQ implements IEventBus {
   consumer: string;
   exchange: string;
   hostname: string;

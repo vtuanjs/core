@@ -22,7 +22,7 @@ export interface IBaseService<T> {
 
 const CACHE_REF_ID = '#refId_';
 
-export default abstract class BaseService<T> implements IBaseService<T> {
+export abstract class BaseService<T> implements IBaseService<T> {
   repo: IBaseRepository<T>;
   private cache?: ICache;
   private prefix?: string;

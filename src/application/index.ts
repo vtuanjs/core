@@ -8,7 +8,7 @@ import { sendErrorResponse, createErrorResponse } from './helpers';
 import { IAppConfig, IHttpConfig } from '../configurations';
 import { ILogger } from '../logger';
 
-export default abstract class App {
+export abstract class MainApplication {
   server: Server;
   app: Application;
 

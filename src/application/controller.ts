@@ -6,7 +6,7 @@ export interface IController {
   router: Router;
 }
 
-export default abstract class Controller implements IController {
+export abstract class Controller implements IController {
   router: Router;
 
   constructor() {

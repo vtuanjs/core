@@ -3,7 +3,7 @@ import { IMongoConfig } from '../../configurations';
 import { ILogger } from '../../logger';
 import { ISystemNotify } from '../../system_notify';
 
-export default class MongoDB {
+export class MongoDB {
   logger: ILogger;
   config: IMongoConfig;
   systemNotify?: ISystemNotify;
