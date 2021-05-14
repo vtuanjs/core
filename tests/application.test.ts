@@ -52,7 +52,7 @@ class UserService implements IUserService {
   }
 
   createUser() {
-    return 'CRETE USER';
+    return 'CREATE USER';
   }
 }
 
