@@ -2,6 +2,8 @@ import { describe, it } from 'mocha';
 import { expect } from 'chai';
 import request from 'supertest';
 
+import packageJSON from '../package.json';
+
 import {
   MainApplication,
   Controller,
@@ -11,14 +13,8 @@ import {
   sendSuccessReponse
 } from '../src';
 
-// Prepare
-interface IUserService {
-  getUser(): string;
-  createUser(): string;
-}
-
 class UserController extends Controller {
-  constructor(private userService: IUserService) {
+  constructor() {
     super();
     this.setupRouter();
   }
@@ -29,7 +25,7 @@ class UserController extends Controller {
   }
 
   async getUser(req: Request, res: Response, next: NextFunction) {
-    const result = this.userService.getUser();
+    const result = 'GET USER';
 
     sendSuccessReponse(result, res);
   }
@@ -40,24 +36,16 @@ class UserController extends Controller {
 }
 
 class App extends MainApplication {
-  constructor(userService: IUserService) {
-    super(console);
-    this.setupControllers(new UserController(userService));
+  constructor() {
+    super(console, { name: 'My app', version: packageJSON.version, port: 5000 });
+    this.setupControllers(new UserController());
   }
 }
 
-class UserService implements IUserService {
-  getUser() {
-    return 'GET USER';
-  }
-
-  createUser() {
-    return 'CREATE USER';
-  }
-}
-
-const userSerivce = new UserService();
-const app = new App(userSerivce);
+const app = new App();
+app.showInfo();
+// Start app
+// app.start();
 
 // test
 describe('GET /user', () => {

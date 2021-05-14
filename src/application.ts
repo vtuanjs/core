@@ -64,7 +64,7 @@ export abstract class MainApplication {
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   protected handleRequestError(err: any, req: Request, res: Response, _next: NextFunction): void {
     if (this.config.debug) {
-      this.logger.warn(`API Error: ${err?.code} ${req.url}`, createErrorResponse(err));
+      this.logger.warn(`API Error: ${req.url}`, createErrorResponse(err));
     }
 
     sendErrorResponse(err, res);
