@@ -1,6 +1,6 @@
 {
   "name": "@vtjs/core",
-  "version": "0.2.4",
+  "version": "0.2.6",
   "description": "Help you focus business logic",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

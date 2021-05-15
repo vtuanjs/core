@@ -18,13 +18,16 @@ export abstract class MainApplication {
   app: Application;
   config: Config;
 
-  constructor(public logger: ILogger, config?: Config) {
+  constructor(
+    public logger: ILogger,
+    { port = 5000, debug = false, name = 'Example', version = '1.0.0', cors: _cors = {} }: Config
+  ) {
     this.config = {
-      port: 5000,
-      debug: false,
-      name: 'Express App',
-      version: '1.0.0',
-      ...config
+      port,
+      debug,
+      name,
+      version,
+      cors: _cors
     };
 
     this.app = express();
