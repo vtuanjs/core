@@ -1,10 +1,4 @@
-import { Router, Handler } from 'express';
-
-type AsyncFuntion = (...args: any[]) => Promise<unknown>;
-
-export interface IController {
-  router: Router;
-}
+import { IController, AsyncFuntion, Router, Handler } from './defination';
 
 export abstract class Controller implements IController {
   router: Router;

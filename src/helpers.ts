@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { ErrorCode, AppError, ErrorMessage } from './errors';
-import { Response } from 'express';
+import { Response } from './defination';
 
 export function sendErrorResponse(e: any, res: Response): void {
   const error = createErrorResponse(e);

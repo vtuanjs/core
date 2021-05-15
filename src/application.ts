@@ -1,26 +1,17 @@
 import http, { Server } from 'http';
-import express, { Application, Request, Response, NextFunction } from 'express';
+import express from 'express';
 import compression from 'compression';
 import cors from 'cors';
-import { IController } from './controller';
+import {
+  IController,
+  ILogger,
+  Config,
+  Application,
+  Request,
+  Response,
+  NextFunction
+} from './defination';
 import { sendErrorResponse, createErrorResponse } from './helpers';
-
-export { Request, Response, NextFunction, express };
-
-export interface ILogger {
-  info(message?: string, details?: any): void;
-  error(message?: string, details?: any): void;
-  warn(message?: string, details?: any): void;
-  debug(message?: string, details?: any): void;
-}
-
-export type Config = {
-  name?: string;
-  version?: string;
-  port?: number;
-  cors?: { [key: string]: unknown };
-  debug?: boolean;
-};
 
 export abstract class MainApplication {
   server: Server;
