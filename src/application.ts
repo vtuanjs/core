@@ -10,7 +10,7 @@ import {
   Request,
   Response,
   NextFunction
-} from './defination';
+} from './definitions';
 import { sendErrorResponse, createErrorResponse } from './helpers';
 
 export abstract class MainApplication {

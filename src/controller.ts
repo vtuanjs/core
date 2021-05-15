@@ -1,4 +1,4 @@
-import { IController, AsyncFuntion, Router, Handler } from './defination';
+import { IController, AsyncFuntion, Router, Handler } from './definitions';
 
 export abstract class Controller implements IController {
   router: Router;
